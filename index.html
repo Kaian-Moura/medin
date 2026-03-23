@@ -16,7 +16,7 @@
     body {
       font-family: 'DM Sans', system-ui, sans-serif;
       background-color: #15aab1;
-      color: #0a1a1b;
+      color: #fff;
       overflow-x: hidden;
     }
     a { text-decoration: none; color: inherit; }
@@ -47,13 +47,14 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
+      background: #fff;
       transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
       border-bottom: 1px solid transparent;
     }
     #navbar.scrolled {
-      background: rgba(21, 170, 177, 0.92);
-      backdrop-filter: blur(16px);
-      border-color: rgba(10, 26, 27, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border-color: transparent;
     }
     .nav-inner {
       display: flex;
@@ -730,6 +731,66 @@
     }
 
     /* ============================================================
+       COLOR OVERRIDES (REQUESTED)
+    ============================================================ */
+    .nav-logo-icon,
+    .hero-badge,
+    .hero-title,
+    .hero-title span,
+    .hero-desc,
+    .section-label,
+    .section-title,
+    .section-title span,
+    .about-text p,
+    .about-text strong,
+    .feature-icon,
+    .feature-card h3,
+    .feature-card p,
+    .timeline-year,
+    .timeline-content h3,
+    .timeline-content p,
+    .projects-header p,
+    .project-icon,
+    .project-status,
+    .project-card h3,
+    .project-card p,
+    .tag,
+    .team-header p,
+    .member-card h3,
+    .member-role,
+    .member-area,
+    .social-btn,
+    .footer-brand-logo span,
+    .footer-brand-logo span em,
+    .footer-brand p,
+    .footer-col h4,
+    .footer-contact-list li,
+    .footer-contact-list li svg,
+    .footer-bottom p,
+    .footer-social-btn,
+    .btn-outline,
+    .hero-scroll {
+      color: #fff !important;
+    }
+    .nav-links a::after { background: #0a1a1b; }
+    .nav-logo,
+    .nav-links a,
+    .mobile-menu a,
+    .nav-hamburger {
+      color: #0a1a1b !important;
+    }
+    .nav-hamburger span {
+      background: #0a1a1b;
+    }
+    .mobile-menu {
+      background: rgba(255, 255, 255, 0.97);
+      border-top: 1px solid rgba(10,26,27,0.12);
+    }
+    .btn-outline {
+      border-color: rgba(255,255,255,0.55);
+    }
+
+    /* ============================================================
        ANIMATIONS
     ============================================================ */
     @keyframes fadeUp {
@@ -774,7 +835,7 @@
       <nav class="nav-inner">
         <a href="#" class="nav-logo">
           <div class="nav-logo-icon">M</div>
-          med<em style="font-style:normal;color:rgba(10,26,27,0.65)">-in</em>
+          med<em style="font-style:normal;color:rgba(10,26,27,0.7)">-in</em>
         </a>
         <ul class="nav-links">
           <li><a href="#quem-somos">Quem Somos</a></li>
