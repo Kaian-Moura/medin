@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>med-in | Liga de Engenharia Biomédica — Inteli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background-color: #15aab1;
+      color: #0a1a1b;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { border: none; background: none; cursor: pointer; font-family: inherit; }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    .font-display { font-family: 'Space Grotesk', system-ui, sans-serif; }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    @media (min-width: 640px) { .container { padding: 0 1.5rem; } }
+    @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    #navbar.scrolled {
+      background: rgba(21, 170, 177, 0.92);
+      backdrop-filter: blur(16px);
+      border-color: rgba(10, 26, 27, 0.12);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #0a1a1b;
+    }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: #0a1a1b;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      font-family: 'Space Grotesk', sans-serif;
+      flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(10, 26, 27, 0.75);
+      transition: color 0.25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: #0a1a1b;
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: #0a1a1b; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: #0a1a1b;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .mobile-menu {
+      display: none;
+      background: rgba(21, 170, 177, 0.97);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(10,26,27,0.1);
+      padding: 1.5rem 0;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .mobile-menu a {
+      display: block;
+      padding: 0.6rem 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      color: rgba(10,26,27,0.8);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: #0a1a1b; }
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .hero-overlay-1 {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(21,170,177,0.92) 0%, rgba(21,170,177,0.72) 50%, rgba(21,170,177,0.42) 100%);
+    }
+    .hero-overlay-2 {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #15aab1 0%, transparent 50%, rgba(21,170,177,0.3) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      padding: 8rem 0 5rem;
+      max-width: 700px;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #0a1a1b;
+      border: 1px solid rgba(10,26,27,0.3);
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #0a1a1b;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+    .hero-title span { color: rgba(10,26,27,0.65); }
+    .hero-desc {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: rgba(10,26,27,0.72);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .btn-primary {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
+      padding: 0.875rem 2rem;
+      background: #0a1a1b;
+      color: #fff;
+      border-radius: 8px;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 4px 14px rgba(10,26,27,0.25);
+    }
+    .btn-primary:hover {
+      background: #1a3435;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(10,26,27,0.3);
+    }
+    .btn-outline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
+      padding: 0.875rem 2rem;
+      border: 1.5px solid rgba(10,26,27,0.4);
+      color: #0a1a1b;
+      border-radius: 8px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .btn-outline:hover {
+      background: rgba(10,26,27,0.08);
+      border-color: rgba(10,26,27,0.6);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: rgba(10,26,27,0.45);
+      transition: color 0.25s;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll:hover { color: #0a1a1b; }
+    .hero-scroll svg { width: 28px; height: 28px; }
+
+    /* ============================================================
+       SECTIONS COMMON
+    ============================================================ */
+    section { position: relative; overflow: hidden; }
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(10,26,27,0.6);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.02em;
+      color: #0a1a1b;
+      line-height: 1.15;
+    }
+    .section-title span { color: rgba(10,26,27,0.65); }
+
+    /* ============================================================
+       ABOUT
+    ============================================================ */
+    #quem-somos {
+      padding: 6rem 0;
+      background: linear-gradient(to bottom, #15aab1, #0e8a90, #15aab1);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+    .about-img-wrap {
+      position: relative;
+    }
+    .about-img-wrap img {
+      width: 100%;
+      border-radius: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .about-img-glow {
+      position: absolute;
+      inset: -10%;
+      background: radial-gradient(circle, rgba(10,26,27,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(10,26,27,0.72);
+      margin-bottom: 1.25rem;
+    }
+    .about-text strong { color: #0a1a1b; }
+    .about-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 600px) { .about-features { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 1rem;
+      border-radius: 12px;
+      background: rgba(10,26,27,0.08);
+      border: 1px solid rgba(10,26,27,0.15);
+      transition: background 0.25s;
+    }
+    .feature-card:hover { background: rgba(10,26,27,0.14); }
+    .feature-icon {
+      width: 32px; height: 32px;
+      margin-bottom: 0.6rem;
+      color: #0a1a1b;
+    }
+    .feature-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #0a1a1b;
+      margin-bottom: 0.3rem;
+    }
+    .feature-card p {
+      font-size: 0.78rem;
+      color: rgba(10,26,27,0.65);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ============================================================
+       HISTORY / TIMELINE
+    ============================================================ */
+    #historia {
+      padding: 6rem 0;
+      background: linear-gradient(to bottom, #15aab1, #0c7a80, #15aab1);
+    }
+    .history-header { text-align: right; margin-bottom: 4rem; }
+    .timeline {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(10,26,27,0.4), rgba(10,26,27,0.1), transparent);
+      transform: translateX(-50%);
+    }
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 12px; height: 12px;
+      background: #0a1a1b;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 2px 8px rgba(10,26,27,0.3);
+      z-index: 2;
+      flex-shrink: 0;
+    }
+    .timeline-content {
+      width: calc(50% - 2rem);
+      padding-right: 1rem;
+    }
+    .timeline-item:nth-child(even) .timeline-content {
+      padding-right: 0;
+      padding-left: 1rem;
+    }
+    .timeline-year {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(10,26,27,0.55);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-content h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0a1a1b;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-content p {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: rgba(10,26,27,0.68);
+    }
+    @media (max-width: 700px) {
+      .timeline-line { left: 20px; }
+      .timeline-item, .timeline-item:nth-child(even) { flex-direction: column; padding-left: 48px; }
+      .timeline-dot { left: 20px; }
+      .timeline-content, .timeline-item:nth-child(even) .timeline-content {
+        width: 100%; padding: 0;
+      }
+    }
+
+    /* ============================================================
+       PROJECTS
+    ============================================================ */
+    #projetos {
+      padding: 6rem 0;
+      background: linear-gradient(to bottom, #15aab1, #0e8a90, #15aab1);
+    }
+    .projects-header { text-align: center; margin-bottom: 3.5rem; }
+    .projects-header p {
+      margin-top: 1rem;
+      color: rgba(10,26,27,0.68);
+      max-width: 600px;
+      margin-left: auto; margin-right: auto;
+      line-height: 1.7;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) { .projects-grid { grid-template-columns: 1fr; } }
+    .project-card {
+      padding: 1.75rem 2rem;
+      border-radius: 16px;
+      background: rgba(10,26,27,0.08);
+      border: 1px solid rgba(10,26,27,0.15);
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card:hover {
+      background: rgba(10,26,27,0.14);
+      border-color: rgba(10,26,27,0.3);
+      transform: translateY(-3px);
+    }
+    .project-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .project-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(10,26,27,0.1);
+      border: 1px solid rgba(10,26,27,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: #0a1a1b;
+      transition: background 0.25s;
+    }
+    .project-card:hover .project-icon { background: rgba(10,26,27,0.18); }
+    .project-icon svg { width: 22px; height: 22px; }
+    .project-status {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(10,26,27,0.6);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(10,26,27,0.2);
+      background: rgba(10,26,27,0.05);
+    }
+    .project-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #0a1a1b;
+      margin-bottom: 0.6rem;
+    }
+    .project-card p {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: rgba(10,26,27,0.68);
+      margin-bottom: 1.25rem;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(10,26,27,0.65);
+      background: rgba(10,26,27,0.08);
+      border: 1px solid rgba(10,26,27,0.12);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+    }
+
+    /* ============================================================
+       TEAM
+    ============================================================ */
+    #equipe {
+      padding: 6rem 0;
+      background: linear-gradient(to bottom, #15aab1, #0e8a90, #15aab1);
+    }
+    .team-header { margin-bottom: 3.5rem; }
+    .team-header p {
+      margin-top: 1rem;
+      color: rgba(10,26,27,0.68);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      max-width: 960px;
+    }
+    @media (max-width: 900px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .team-grid { grid-template-columns: 1fr; } }
+    .member-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: rgba(10,26,27,0.08);
+      border: 1px solid rgba(10,26,27,0.15);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .member-card:hover {
+      background: rgba(10,26,27,0.14);
+      border-color: rgba(10,26,27,0.28);
+    }
+    .member-avatar {
+      width: 60px; height: 60px;
+      border-radius: 12px;
+      background: rgba(10,26,27,0.2);
+      border: 1px solid rgba(10,26,27,0.25);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+    .member-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0a1a1b;
+      margin-bottom: 0.2rem;
+    }
+    .member-role {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(10,26,27,0.65);
+      margin-bottom: 0.15rem;
+    }
+    .member-area {
+      font-size: 0.75rem;
+      color: rgba(10,26,27,0.5);
+      margin-bottom: 1rem;
+    }
+    .member-socials {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .social-btn {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(10,26,27,0.08);
+      border: 1px solid rgba(10,26,27,0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(10,26,27,0.55);
+      transition: all 0.25s;
+    }
+    .social-btn:hover {
+      background: rgba(10,26,27,0.16);
+      color: #0a1a1b;
+    }
+    .social-btn svg { width: 14px; height: 14px; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    #contato {
+      padding: 5rem 0 3rem;
+      background: #0e8a90;
+      border-top: 1px solid rgba(10,26,27,0.12);
+      position: relative;
+    }
+    #contato::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(10,26,27,0.3), transparent);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+    .footer-brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .footer-brand-logo .logo-icon {
+      width: 36px; height: 36px;
+      background: #0a1a1b;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+    .footer-brand-logo span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #0a1a1b;
+    }
+    .footer-brand-logo span em {
+      font-style: normal;
+      color: rgba(10,26,27,0.65);
+    }
+    .footer-brand p {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: rgba(10,26,27,0.65);
+      max-width: 260px;
+    }
+    .footer-col h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0a1a1b;
+      margin-bottom: 1rem;
+    }
+    .footer-contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .footer-contact-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      color: rgba(10,26,27,0.65);
+    }
+    .footer-contact-list li svg {
+      width: 16px; height: 16px;
+      color: rgba(10,26,27,0.5);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .footer-contact-list a:hover { color: #0a1a1b; }
+    .footer-socials {
+      display: flex;
+      gap: 0.6rem;
+    }
+    .footer-social-btn {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(10,26,27,0.08);
+      border: 1px solid rgba(10,26,27,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(10,26,27,0.55);
+      transition: all 0.25s;
+    }
+    .footer-social-btn:hover {
+      background: rgba(10,26,27,0.16);
+      color: #0a1a1b;
+      border-color: rgba(10,26,27,0.3);
+    }
+    .footer-social-btn svg { width: 18px; height: 18px; }
+    .footer-bottom {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(10,26,27,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .footer-bottom p {
+      font-size: 0.78rem;
+      color: rgba(10,26,27,0.45);
+    }
+
+    /* ============================================================
+       ANIMATIONS
+    ============================================================ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ============================================================
+       SCROLLBAR
+    ============================================================ */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #15aab1; }
+    ::-webkit-scrollbar-thumb { background: rgba(10,26,27,0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(10,26,27,0.5); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <header id="navbar">
+    <div class="container">
+      <nav class="nav-inner">
+        <a href="#" class="nav-logo">
+          <div class="nav-logo-icon">M</div>
+          med<em style="font-style:normal;color:rgba(10,26,27,0.65)">-in</em>
+        </a>
+        <ul class="nav-links">
+          <li><a href="#quem-somos">Quem Somos</a></li>
+          <li><a href="#projetos">Projetos</a></li>
+          <li><a href="#equipe">Equipe</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+        <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="container">
+        <ul>
+          <li><a href="#quem-somos" class="mobile-link">Quem Somos</a></li>
+          <li><a href="#projetos" class="mobile-link">Projetos</a></li>
+          <li><a href="#equipe" class="mobile-link">Equipe</a></li>
+          <li><a href="#contato" class="mobile-link">Contato</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="hero">
+    <div class="hero-bg">
+      <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028664307/D6QvGgiueS7Pmvcgog7WSr/hero-banner-dv5BnuXdpAhSaMV4YCNHv2.webp" alt="IoT e Biomedicina" />
+      <div class="hero-overlay-1"></div>
+      <div class="hero-overlay-2"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">Liga de Engenharia Biomédica — Inteli</span>
+        <h1 class="hero-title">Integrando saúde e <span>tecnologia.</span></h1>
+        <p class="hero-desc">Desenvolvemos projetos de software e hardware para healthtechs e apoiamos pesquisas acadêmicas na interseção entre saúde e tecnologia.</p>
+        <div class="hero-buttons">
+          <a href="#quem-somos" class="btn-primary">Conheça o med-in</a>
+          <a href="#projetos" class="btn-outline">Nossos Projetos</a>
+        </div>
+      </div>
+    </div>
+    <a href="#quem-somos" class="hero-scroll" aria-label="Rolar para baixo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </a>
+  </section>
+
+  <!-- ============================================================
+       QUEM SOMOS
+  ============================================================ -->
+  <section id="quem-somos">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img-wrap reveal">
+          <div class="about-img-glow"></div>
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028664307/D6QvGgiueS7Pmvcgog7WSr/about-illustration-ZnWRNhFrENkSTLvuR7WN7V.webp" alt="Célula digital com circuitos IoT" />
+        </div>
+        <div class="about-text">
+          <span class="section-label reveal">Quem Somos</span>
+          <h2 class="section-title reveal reveal-delay-1">O que é o <span>med-in</span>?</h2>
+          <div style="height:1.5rem"></div>
+          <p class="reveal reveal-delay-2">
+            O <strong>med-in</strong> é a Liga de Engenharia Biomédica do Inteli. Atuamos no desenvolvimento de projetos que integram <strong>software e hardware</strong> para atender as demandas de <strong>healthtechs</strong> e, consequentemente, melhorar a qualidade de vida das pessoas.
+          </p>
+          <p class="reveal reveal-delay-3">
+            Além disso, a liga apoia e viabiliza o desenvolvimento de <strong>pesquisas acadêmicas</strong> no campo da interseção entre a área da saúde e da tecnologia, conectando o mundo científico à inovação real.
+          </p>
+          <div class="about-features">
+            <div class="feature-card reveal reveal-delay-3">
+              <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <h3>Healthtechs</h3>
+              <p>Projetos de software e hardware para demandas reais do setor de saúde.</p>
+            </div>
+            <div class="feature-card reveal reveal-delay-4">
+              <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="9" width="6" height="6" rx="1"/><rect x="16" y="9" width="6" height="6" rx="1"/><path d="M12 8v1m-3 3H6m12 0h-3m-3 3v3"/></svg>
+              <h3>Engenharia</h3>
+              <p>Integração de sistemas embarcados, sensores e plataformas digitais.</p>
+            </div>
+            <div class="feature-card reveal reveal-delay-5">
+              <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/></svg>
+              <h3>Pesquisa</h3>
+              <p>Apoio a pesquisas acadêmicas na interseção entre saúde e tecnologia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HISTÓRIA
+  ============================================================ -->
+  <section id="historia">
+    <div class="container">
+      <div class="history-header">
+        <span class="section-label reveal">Nossa Trajetória</span>
+        <h2 class="section-title reveal reveal-delay-1">Nossa <span>História</span></h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2024</div>
+            <h3>A Ideia Nasce</h3>
+            <p>Um grupo de estudantes da Inteli, apaixonados por tecnologia e saúde, identifica o potencial de unir IoT com Biomedicina. A ideia do med-in começa a tomar forma nas salas de aula e laboratórios.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2024</div>
+            <h3>Fundação da Liga</h3>
+            <p>O med-in é oficialmente fundado como liga de extensão da Inteli. Com uma equipe multidisciplinar, começamos a desenvolver nossos primeiros protótipos de dispositivos biomédicos conectados.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-2">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2025</div>
+            <h3>Primeiros Projetos</h3>
+            <p>Lançamos nossos primeiros projetos de sensores biomédicos IoT, incluindo dispositivos de monitoramento de sinais vitais e sistemas de coleta de dados para pesquisa clínica.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-3">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2026</div>
+            <h3>Expansão e Impacto</h3>
+            <p>O med-in cresce com novos membros e parcerias. Nossos projetos ganham reconhecimento na comunidade acadêmica e começamos a colaborar com instituições de saúde para validação de nossas soluções.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROJETOS
+  ============================================================ -->
+  <section id="projetos">
+    <div class="container">
+      <div class="projects-header">
+        <span class="section-label reveal">O que fazemos</span>
+        <h2 class="section-title reveal reveal-delay-1">Nossos <span>Projetos</span></h2>
+        <p class="reveal reveal-delay-2">Desenvolvemos soluções que conectam o mundo biológico ao digital, criando dispositivos inteligentes para monitoramento, diagnóstico e pesquisa.</p>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card reveal">
+          <div class="project-card-top">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <span class="project-status">Em desenvolvimento</span>
+          </div>
+          <h3>BioMonitor</h3>
+          <p>Sistema de monitoramento contínuo de sinais vitais utilizando sensores IoT vestíveis. Coleta dados de frequência cardíaca, oximetria e temperatura em tempo real.</p>
+          <div class="project-tags">
+            <span class="tag">Wearable</span>
+            <span class="tag">Sensores</span>
+            <span class="tag">Real-time</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-1">
+          <div class="project-card-top">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></svg>
+            </div>
+            <span class="project-status">Protótipo</span>
+          </div>
+          <h3>ThermoTrack</h3>
+          <p>Dispositivo IoT para monitoramento térmico de amostras biológicas em laboratório. Garante a integridade de materiais sensíveis à temperatura com alertas automáticos.</p>
+          <div class="project-tags">
+            <span class="tag">Laboratório</span>
+            <span class="tag">Temperatura</span>
+            <span class="tag">Alertas</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-2">
+          <div class="project-card-top">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1"/></svg>
+            </div>
+            <span class="project-status">Pesquisa</span>
+          </div>
+          <h3>MedNet</h3>
+          <p>Rede mesh de sensores biomédicos para ambientes hospitalares. Permite a comunicação entre dispositivos de monitoramento, criando um ecossistema integrado de dados de saúde.</p>
+          <div class="project-tags">
+            <span class="tag">Mesh Network</span>
+            <span class="tag">Hospital</span>
+            <span class="tag">Integração</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-3">
+          <div class="project-card-top">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <span class="project-status">Conceito</span>
+          </div>
+          <h3>DiagnoSense</h3>
+          <p>Plataforma de diagnóstico assistido que combina dados de múltiplos sensores IoT com algoritmos de análise para auxiliar profissionais de saúde na tomada de decisão clínica.</p>
+          <div class="project-tags">
+            <span class="tag">Diagnóstico</span>
+            <span class="tag">IA</span>
+            <span class="tag">Dados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EQUIPE
+  ============================================================ -->
+  <section id="equipe">
+    <div class="container">
+      <div class="team-header">
+        <span class="section-label reveal">Nosso Time</span>
+        <h2 class="section-title reveal reveal-delay-1">Equipe <span>med-in</span></h2>
+        <p class="reveal reveal-delay-2">Uma equipe multidisciplinar de estudantes da Inteli, unidos pelo propósito de desenvolver soluções reais para healthtechs e pesquisa acadêmica.</p>
+      </div>
+      <div class="team-grid">
+        <div class="member-card reveal">
+          <div class="member-avatar">AS</div>
+          <h3>Ana Silva</h3>
+          <div class="member-role">Líder de Projeto</div>
+          <div class="member-area">Eng. de Computação</div>
+          <div class="member-socials">
+            <button class="social-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </button>
+            <button class="social-btn" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="member-card reveal reveal-delay-1">
+          <div class="member-avatar">CM</div>
+          <h3>Carlos Mendes</h3>
+          <div class="member-role">Hardware Lead</div>
+          <div class="member-area">Eng. de Computação</div>
+          <div class="member-socials">
+            <button class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+            <button class="social-btn" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></button>
+          </div>
+        </div>
+        <div class="member-card reveal reveal-delay-2">
+          <div class="member-avatar">BC</div>
+          <h3>Beatriz Costa</h3>
+          <div class="member-role">Pesquisadora</div>
+          <div class="member-area">Ciência da Computação</div>
+          <div class="member-socials">
+            <button class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+            <button class="social-btn" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></button>
+          </div>
+        </div>
+        <div class="member-card reveal reveal-delay-3">
+          <div class="member-avatar">DO</div>
+          <h3>Daniel Oliveira</h3>
+          <div class="member-role">Desenvolvedor IoT</div>
+          <div class="member-area">Eng. de Software</div>
+          <div class="member-socials">
+            <button class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+            <button class="social-btn" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></button>
+          </div>
+        </div>
+        <div class="member-card reveal reveal-delay-4">
+          <div class="member-avatar">FL</div>
+          <h3>Fernanda Lima</h3>
+          <div class="member-role">Designer UX</div>
+          <div class="member-area">Sistemas de Informação</div>
+          <div class="member-socials">
+            <button class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+            <button class="social-btn" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></button>
+          </div>
+        </div>
+        <div class="member-card reveal reveal-delay-5">
+          <div class="member-avatar">GS</div>
+          <h3>Gabriel Santos</h3>
+          <div class="member-role">Data Analyst</div>
+          <div class="member-area">Ciência da Computação</div>
+          <div class="member-socials">
+            <button class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+            <button class="social-btn" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER / CONTATO
+  ============================================================ -->
+  <footer id="contato">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-logo">
+            <div class="logo-icon">M</div>
+            <span>med<em>-in</em></span>
+          </div>
+          <p>Liga de Engenharia Biomédica do Inteli. Desenvolvemos projetos de software e hardware para healthtechs e apoiamos pesquisas acadêmicas em saúde &amp; tecnologia.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contato</h4>
+          <ul class="footer-contact-list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:medin@inteli.edu.br">medin@inteli.edu.br</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Av. Prof. Almeida Prado, 520 — Butantã, São Paulo - SP</span>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Redes Sociais</h4>
+          <div class="footer-socials">
+            <button class="footer-social-btn" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </button>
+            <button class="footer-social-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </button>
+            <button class="footer-social-btn" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 med-in — Liga de Engenharia Biomédica, Inteli.</p>
+        <p>Feito com dedicação pelos membros do med-in.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // --- Navbar scroll effect ---
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // --- Mobile menu toggle ---
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    });
+
+    // --- Scroll reveal ---
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  </script>
+</body>
+</html>
